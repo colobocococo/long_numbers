@@ -4,6 +4,10 @@
 using namespace std;
 using namespace long_numb;
 
+constexpr long double operator""_my_double(long double value) {
+    return value;
+}
+
 int Factorial(int n) {
     if (!n) return 1;
     return n * Factorial(n - 1);
@@ -89,42 +93,70 @@ number count_pi() {
     return PI;
 }
 
+number from_literal(double val) {
+    double x = 1e18;
+    number PLUS, ans;
+    PLUS.mantis.resize(com);
+    ans.mantis.resize(com);
+    PLUS.exp = 18;
+    PLUS.mantis[0] = 1;
+
+    if (val < 0) {
+        PLUS.sgn *= -1;
+        val *= -1;
+    }
+
+    while (PLUS.exp >= -15) {
+        while (val >= x) {
+            val -= x;
+            ans = ans + PLUS;
+        }
+        x /= 10;
+        PLUS.exp--;
+    }
+    return ans;
+}
+
 TEST(HelloTest, BasicAssertions) {
-    EXPECT_EQ(to_number(6) * to_number(7), to_number(42));
+EXPECT_EQ(to_number(6) * to_number(7), to_number(42));
 }
 
 TEST(HelloTest1, BasicAssertions1) {
-    EXPECT_NE(to_number(7), to_number(42));
+EXPECT_NE(to_number(7), to_number(42));
 }
 
 TEST(HelloTest2, BasicAssertions2) {
-    EXPECT_NE(to_number(6) / to_number(7), to_number(6/7));
+EXPECT_NE(to_number(6) / to_number(7), to_number(6/7));
 }
 
 TEST(HelloTest3, BasicAssertions2_Test3) {
-    EXPECT_EQ(to_number(6) - to_number(7), to_number(6-7));
+EXPECT_EQ(to_number(6) - to_number(7), to_number(6-7));
 }
 
 TEST(HelloTest4, BasicAssertions3) {
-    EXPECT_EQ(from_string("123"), to_number(123));
+EXPECT_EQ(from_string("123"), to_number(123));
 }
 
 TEST(HelloTest5, BasicAssertions5) {
-    EXPECT_EQ(from_string("123") / to_number(100), to_number(123) / from_string("100"));
+EXPECT_EQ(from_string("123") / to_number(100), to_number(123) / from_string("100"));
 }
 
 TEST(H1, H1) {
-    EXPECT_EQ(to_number(1) < to_number(2), true);
+EXPECT_EQ(to_number(1) < to_number(2), true);
 }
 
 TEST(H2, H3) {
-    EXPECT_NE(to_number(2) > to_number(2), true);
+EXPECT_NE(to_number(2) > to_number(2), true);
 }
 
 TEST(H5, H5) {
-    EXPECT_EQ(sqrt(to_number(2)) < to_number(3) / to_number(2), true);
+EXPECT_EQ(sqrt(to_number(2)) < to_number(3) / to_number(2), true);
 }
 
 TEST(H6, H6) {
-    EXPECT_EQ(sqrt(to_number(2)) > to_number(7) / to_number(5), true);
+EXPECT_EQ(sqrt(to_number(2)) > to_number(7) / to_number(5), true);
+}
+
+TEST(G1, G2) {
+    EXPECT_EQ(from_string("3.14"), from_literal(3.14_my_double));
 }
